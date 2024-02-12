@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: coworking-api
-        image: 720509967111.dkr.ecr.us-east-1.amazonaws.com/p3-repo:latest
+        image: 720509967111.dkr.ecr.us-east-1.amazonaws.com/p3-repo:0.0.3
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
