@@ -26,11 +26,22 @@ Instructions:
    helm list
    kubectl get pods
    ```
-5. Get the PostgreSQL Connection Details:
-   ```bash
-   export POSTGRES_PASSWORD=$(kubectl get secret --namespace default my-postgres-postgresql -o jsonpath="{.data.postgres-password}" | base64 --decode)
-   ```
-## 2: Local Testing of Analytics Application**
+5. Port Forwarding
+
+*   Use **kubectl port-forward** to forward PostgreSQL service port (5432) to local machine.
+*   Connect to the database using **psql** with forwarded port.
+
+<table><tbody><tr><td><code>kubectl port-forward --namespace default svc/my-postgresql2 5432:5432 &amp;</code><br><code>PGPASSWORD="$POSTGRES_PASSWORD" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 &lt; db/1_create_tables.sql</code></td></tr></tbody></table>
+
+6. Seed Database
+
+*   Run SQL seed files located in the **db/** directory to create tables and populate them with data.
+
+<table><tbody><tr><td><code>kubectl port-forward --namespace default svc/my-postgresql2 5432:5432 &amp;</code><br><code>PGPASSWORD="$POSTGRES_PASSWORD" psql --host 127.0.0.1 -U postgres -d postgres -p 5432 &lt; db/<file_name.sql></code></td></tr></tbody></table>
+
+*   Testing the validity of the populated data.
+  
+## 2: Local Testing of Analytics Application
 
 *   Navigate to the **analytics/** directory.
 *   Install requirements for the analytics application.  
@@ -40,7 +51,7 @@ Instructions:
 
 *   Run the analytics application locally:
 
-<table><tbody><tr><td><code>DB_USERNAME=postgres DB_PASSWORD=rJ6lPsG58r python analytics/app.py</code></td></tr></tbody></table>
+<table><tbody><tr><td><code>DB_USERNAME=postgres DB_PASSWORD=postgres python analytics/app.py</code></td></tr></tbody></table>
 
 
 *   Test the application using curl commands.
