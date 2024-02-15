@@ -9,23 +9,23 @@ Pre-requisites:
 
 Instructions:
 1. Install Helm:
-   ```bash
+   <table><tbody><tr><td><code>
    curl -LO https://get.helm.sh/helm-v3.12.2-linux-amd64.tar.gz
-   ```
+   </code></td></tr></tbody></table>
 2. Add the Bitnami Helm Repository:
-    ```bash
+   <table><tbody><tr><td><code>
    helm repo add bitnami https://charts.bitnami.com/bitnami
    helm repo update
-   ```
+   </code></td></tr></tbody></table>
 3. Install the PostgreSQL Chart:
-   ```bash
+   <table><tbody><tr><td><code>
    helm install my-postgres bitnami/postgresql
-   ```
+   </code></td></tr></tbody></table>
 4. Verify the Installation:
-   ```bash
+   <table><tbody><tr><td><code>
    helm list
    kubectl get pods
-   ```
+  </code></td></tr></tbody></table>
 5. Port Forwarding
 
 *   Use **kubectl port-forward** to forward PostgreSQL service port (5432) to local machine.
@@ -58,6 +58,34 @@ Instructions:
 
 <table><tbody><tr><td><code>curl http://127.0.0.1:5153/api/reports/daily_usage</code><br><code>curl http://127.0.0.1:5153/api/reports/user_visits</code></td></tr></tbody></table>
 
+## 3: Docker Image Creation and Local Deployment
+
+*   Build the Docker image locally:
+
+<table><tbody><tr><td><code>docker build -t myimage .</code></td></tr></tbody></table>
+
+*   Run the Docker container locally.  
+    
+
+<table><tbody><tr><td><code>docker run -e DB_USERNAME=postgres -e DB_PASSWORD=postgres --network=host myimage</code></td></tr></tbody></table>
+
+
+## 4: AWS CodeBuild Pipeline
+
+*   Configure CodeBuild to pull the image from the GitHub repository, build it, and push it to the existing ECR repository. Make sure to use the buildspecs.yml file.
+
+
+## 5: Kubernetes Deployment
+
+*   Deploy the application using the **coworking-api.yml** file, **db-configmap.yml** file, and **db-secret.yml** file.
+*   Set **DB\_HOST** to the service name of the Kubernetes PostgreSQL pod.
+
+
+## 6: CloudWatch Agent Setup
+
+*   Set up CloudWatch agent for monitoring.
+
+<table><tbody><tr><td><code>ClusterName=p3-cluster</code><br><code>RegionName=us-east-1</code><br><code>FluentBitHttpPort='2020'</code><br><code>FluentBitReadFromHead='Off'</code><br><code>[[ ${FluentBitReadFromHead} = 'On' ]] &amp;&amp; FluentBitReadFromTail='Off'|| FluentBitReadFromTail='On'</code><br><code>[[ -z ${FluentBitHttpPort} ]] &amp;&amp; FluentBitHttpServer='Off' || FluentBitHttpServer='On'</code><br><code>curl https://raw.githubusercontent.com/aws-samples/amazon-cloudwatch-container-insights/latest/k8s-deployment-manifest-templates/deployment-mode/daemonset/container-insights-monitoring/quickstart/cwagent-fluent-bit-quickstart.yaml | sed 's/{{cluster_name}}/'${ClusterName}'/;s/{{region_name}}/'${RegionName}'/;s/{{http_server_toggle}}/"'${FluentBitHttpServer}'"/;s/{{http_server_port}}/"'${FluentBitHttpPort}'"/;s/{{read_from_head}}/"'${FluentBitReadFromHead}'"/;s/{{read_from_tail}}/"'${FluentBitReadFromTail}'"/' | kubectl apply -f -</code></td></tr></tbody></table>
 
 Saving costs:
 Implement Autoscaling:
