@@ -65,8 +65,5 @@ spec:
               name: db-env
               key: DB_PORT
         - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: db-secret
-              key: DB_PASSWORD
+          value: lZQ6dE7n7q
       restartPolicy: Always
