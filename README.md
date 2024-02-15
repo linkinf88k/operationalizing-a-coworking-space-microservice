@@ -9,18 +9,14 @@ Pre-requisites:
 
 Instructions:
 1. Install Helm:
-   <table><tbody><tr><td><code>
-   curl -LO https://get.helm.sh/helm-v3.12.2-linux-amd64.tar.gz
-   </code></td></tr></tbody></table>
+   <table><tbody><tr><td><code>curl -LO https://get.helm.sh/helm-v3.12.2-linux-amd64.tar.gz</code></td></tr></tbody></table>
 2. Add the Bitnami Helm Repository:
    <table><tbody><tr><td><code>
    helm repo add bitnami https://charts.bitnami.com/bitnami
    helm repo update
    </code></td></tr></tbody></table>
 3. Install the PostgreSQL Chart:
-   <table><tbody><tr><td><code>
-   helm install my-postgres bitnami/postgresql
-   </code></td></tr></tbody></table>
+   <table><tbody><tr><td><code>helm install my-postgresql2 bitnami/postgresql</code></td></tr></tbody></table>
 4. Verify the Installation:
    <table><tbody><tr><td><code>
    helm list
