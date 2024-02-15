@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
       - name: coworking-api
-        image: 720509967111.dkr.ecr.us-east-1.amazonaws.com/p3-repo:latest
+        image: 756437418345.dkr.ecr.us-east-1.amazonaws.com/p3-app:latest
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -65,5 +65,8 @@ spec:
               name: db-env
               key: DB_PORT
         - name: DB_PASSWORD
-          value: postgres
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_PASSWORD
       restartPolicy: Always
