@@ -13,6 +13,7 @@ Instructions:
 2. Add the Bitnami Helm Repository:
    <table><tbody><tr><td><code>
    helm repo add bitnami https://charts.bitnami.com/bitnami
+      </code><br><code>
    helm repo update
    </code></td></tr></tbody></table>
 3. Install the PostgreSQL Chart:
@@ -20,6 +21,7 @@ Instructions:
 4. Verify the Installation:
    <table><tbody><tr><td><code>
    helm list
+      </code><br><code>
    kubectl get pods
   </code></td></tr></tbody></table>
 5. Port Forwarding
